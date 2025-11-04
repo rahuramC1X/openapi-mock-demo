@@ -1,0 +1,107 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Pet Store Mock API",
+    "description": "Small example API for frontend mocking",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://example.com",
+      "description": "placeholder server"
+    }
+  ],
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List pets",
+        "responses": {
+          "200": {
+            "description": "An array of pets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Pet" }
+                },
+                "example": [
+                  { "id": 1, "name": "Milo", "tag": "dog" },
+                  { "id": 2, "name": "Cleo", "tag": "cat" }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a pet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PetCreate" },
+              "example": { "name": "Buddy", "tag": "dog" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pet created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" },
+                "example": { "id": 3, "name": "Buddy", "tag": "dog" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{petId}": {
+      "get": {
+        "summary": "Get a pet by id",
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A pet",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" },
+                "example": { "id": 1, "name": "Milo", "tag": "dog" }
+              }
+            }
+          },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "tag": { "type": "string" }
+        },
+        "required": ["id", "name"]
+      },
+      "PetCreate": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "tag": { "type": "string" }
+        },
+        "required": ["name"]
+      }
+    }
+  }
+}
